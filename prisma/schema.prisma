@@ -12,7 +12,7 @@ enum Role {
   ADMIN
 }
 
-enum RoundType {
+enum TaskType {
   SINGLE
   MULTIPLE
   OPEN
@@ -42,8 +42,9 @@ model Quest {
   ownerId        String?         @map("owner_id")
   title          String
   description    String
+  timeLimit      Int?            @map("time_limit")
   participations Participation[]
-  rounds         Round[]
+  tasks          Task[]
   comments       Comment[]
   ratings        Rating[]
 
@@ -63,34 +64,33 @@ model Participation {
   @@map("participations")
 }
 
-model Round {
+model Task {
   id         String      @id @default(uuid())
   quest      Quest       @relation(fields: [questId], references: [id])
   questId    String      @map("quest_id")
   order      Int
-  timeLimit  Int?        @map("time_limit")
   points     Int
-  type       RoundType
+  type       TaskType
   coordinate Coordinate?
   variants   Variant[]
 
-  @@map("rounds")
+  @@map("tasks")
 }
 
 model Variant {
   id        String  @id @default(uuid())
-  round     Round   @relation(fields: [roundId], references: [id])
-  roundId   String  @map("round_id")
+  task      Task    @relation(fields: [taskId], references: [id])
+  taskId    String  @map("taskId_id")
   content   String
-  isCorrect Boolean @map("is_correct") @default(false)
+  isCorrect Boolean @default(false) @map("is_correct")
 
   @@map("variants")
 }
 
 model Coordinate {
   id        String  @id @default(uuid())
-  round     Round   @relation(fields: [roundId], references: [id])
-  roundId   String  @unique @map("round_id")
+  task      Task    @relation(fields: [taskId], references: [id])
+  taskId    String  @unique @map("taskId_id")
   x         Float
   y         Float
   imageLink String? @map("image_link")
