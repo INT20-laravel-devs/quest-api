@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -13,6 +14,7 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   app.useGlobalFilters(new HttpExceptionFilter());
+  await app.register(fastifyCookie);
 
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<number>('port');
