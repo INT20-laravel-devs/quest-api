@@ -5,12 +5,15 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<number>('port');
   await app.listen(port ?? 3000, () =>
