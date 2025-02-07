@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PLAYER
+  ADMIN
+}
+
+enum RoundType {
+  SINGLE
+  MULTIPLE
+  OPEN
+  IMAGE
+  LOCATION
+}
+
+model User {
+  id             String            @id @default(uuid())
+  email          String            @unique
+  nickname       String            @unique
+  password       String
+  role           Role              @default(PLAYER)
+  avatarLink     String?           @map("avatar_link")
+  quests         Quest[]
+  participations Participation[]
+  achievements   UserAchievement[]
+  comments       Comment[]
+  ratings        Rating[]
+
+  @@map("users")
+}
+
+model Quest {
+  id             String          @id @default(uuid())
+  owner          User?           @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  ownerId        String?         @map("owner_id")
+  title          String
+  description    String
+  participations Participation[]
+  rounds         Round[]
+  comments       Comment[]
+  ratings        Rating[]
+
+  @@map("quests")
+}
+
+model Participation {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  quest     Quest    @relation(fields: [questId], references: [id])
+  questId   String   @map("quest_id")
+  points    Int      @default(0)
+  timeSpent Int      @map("time_spent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("participations")
+}
+
+model Round {
+  id         String      @id @default(uuid())
+  quest      Quest       @relation(fields: [questId], references: [id])
+  questId    String      @map("quest_id")
+  order      Int
+  timeLimit  Int?        @map("time_limit")
+  points     Int
+  type       RoundType
+  coordinate Coordinate?
+  variants   Variant[]
+
+  @@map("rounds")
+}
+
+model Variant {
+  id        String  @id @default(uuid())
+  round     Round   @relation(fields: [roundId], references: [id])
+  roundId   String  @map("round_id")
+  content   String
+  isCorrect Boolean @map("is_correct") @default(false)
+
+  @@map("variants")
+}
+
+model Coordinate {
+  id        String  @id @default(uuid())
+  round     Round   @relation(fields: [roundId], references: [id])
+  roundId   String  @unique @map("round_id")
+  x         Float
+  y         Float
+  imageLink String? @map("image_link")
+
+  @@map("coordinates")
+}
+
+model Achievement {
+  id          String            @id @default(uuid())
+  title       String
+  description String
+  bageLink    String?           @map("bage_link")
+  users       UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String      @id @default(uuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String      @map("user_id")
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  achievementId String      @map("achievement_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("user_achievements")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  quest     Quest    @relation(fields: [questId], references: [id])
+  questId   String   @map("quest_id")
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
+}
+
+model Rating {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  quest     Quest    @relation(fields: [questId], references: [id])
+  questId   String   @map("quest_id")
+  value     Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([userId, questId])
+  @@map("ratings")
+}
