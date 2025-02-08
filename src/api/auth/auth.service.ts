@@ -7,7 +7,7 @@ import { UserRepo } from '../../database/repos/user.repo';
 import { EntityAlreadyExistsException } from '../../utils/exception/entity-already-exists.exception';
 import { EmailTokenNotFoundException } from '../../utils/exception/email-token-not-found.exception';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SignInDto } from './dto/sign-in.dto';
 import { EntityNotFoundException } from '../../utils/exception/entity-not-found.exception';
 import { PasswordIsNotValidException } from '../../utils/exception/password-is-not-valid.exception';

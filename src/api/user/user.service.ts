@@ -3,7 +3,7 @@ import { File } from '@nest-lab/fastify-multer';
 import { FileService } from '../../file/file.service';
 import { UserRepo } from '../../database/repos/user.repo';
 import { UserUpdateDto } from './dto/user-update.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { PasswordIsNotValidException } from '../../utils/exception/password-is-not-valid.exception';
 import { Prisma } from '@prisma/client';
 import { AuthService } from '../auth/auth.service';

@@ -15,6 +15,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+  app.enableCors({ origin: '*', credentials: true });
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.register(fastifyCookie);
   app.useStaticAssets({ root: join(resolve(), '/static/') });
@@ -22,7 +23,7 @@ async function bootstrap() {
 
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<number>('port');
-  await app.listen(port ?? 3000, () =>
+  await app.listen(port ?? 3000, '0.0.0.0', () =>
     console.info(`Server is running on http://127.0.0.1:${port}`),
   );
 }
