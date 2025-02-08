@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
 import fastifyCookie from '@fastify/cookie';
 import { join, resolve } from 'path';
-import multer from '@fastify/multipart';
+import multiPart from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.register(fastifyCookie);
   app.useStaticAssets({ root: join(resolve(), '/static/') });
-  await app.register(multer);
+  await app.register(multiPart);
 
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<number>('port');
