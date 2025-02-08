@@ -1,14 +1,25 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { CreateQuestDto } from './dto/create-quest.dto';
 import { QuestsService } from './quests.service';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { FastifyRequest } from 'fastify';
 
 @Controller('quest')
 export class QuestsController {
   constructor(private readonly questsService: QuestsService) {}
 
+  @UseGuards(AuthGuard())
   @Post()
-  async create(@Body() createQuest: CreateQuestDto) {
-    const userId = '56e6a2ae-6678-4ff7-8554-87a2270ec962';
-    return this.questsService.create(createQuest, userId);
+  async create(
+    @Body() createQuest: CreateQuestDto,
+    @Req() request: FastifyRequest,
+  ) {
+    return this.questsService.create(createQuest, request['user']['id']);
+  }
+
+  @UseGuards(AuthGuard())
+  @Get()
+  async getAll(@Req() request: FastifyRequest) {
+    return this.questsService.findManyByUser(request['user']['id']);
   }
 }

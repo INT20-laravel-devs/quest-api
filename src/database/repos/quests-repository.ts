@@ -11,4 +11,10 @@ export class QuestsRepository {
       data,
     });
   }
+
+  async findMany(where: Prisma.QuestFindManyArgs) {
+    return this.prismaService.quest.findMany({
+      ...where
+    })
+  }
 }
