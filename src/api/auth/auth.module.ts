@@ -18,5 +18,6 @@ import * as process from 'node:process';
   ],
   providers: [AuthService],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

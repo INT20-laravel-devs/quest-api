@@ -1,5 +1,7 @@
 import {
+  Body,
   Controller,
+  Param,
   Patch,
   Req,
   UploadedFile,
@@ -10,6 +12,7 @@ import { UserService } from './user.service';
 import { FileInterceptor, File } from '@nest-lab/fastify-multer';
 import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guard/auth.guard';
+import { UserUpdateDto } from './dto/user-update.dto';
 
 @Controller('/users')
 export class UserController {
@@ -19,7 +22,12 @@ export class UserController {
   @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
   uploadAvatar(@UploadedFile() file: File, @Req() req: FastifyRequest) {
-    console.log(file);
     return this.userService.updateAvatar(file, req['user'].id);
+  }
+
+  @Patch('/:id')
+  @UseGuards(AuthGuard())
+  update(@Body() body: UserUpdateDto, @Param('id') id: string) {
+    return this.userService.update(body, id);
   }
 }

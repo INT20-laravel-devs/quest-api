@@ -98,7 +98,7 @@ export class AuthService {
     return this.jwtService.sign({ sub: user.id });
   }
 
-  private async hashPassword(password: string): Promise<string> {
+  async hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     return bcrypt.hash(password, salt);
