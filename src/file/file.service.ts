@@ -16,4 +16,9 @@ export class FileService {
     const baseUrl = this.configService.get<string>('BACK_BASE_URL');
     return new URL(fileName, baseUrl).toString();
   }
+
+  deleteFile(link: string): void {
+    const path = join(resolve(), '/static/', new URL(link).pathname);
+    fs.unlinkSync(path);
+  }
 }

@@ -17,4 +17,8 @@ export class UserRepo {
   async findById(id: string): Promise<User | null> {
     return this.prisma.user.findFirst({ where: { id } });
   }
+
+  async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+    return this.prisma.user.update({ where: { id }, data });
+  }
 }
