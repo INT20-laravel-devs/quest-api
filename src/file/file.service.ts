@@ -4,6 +4,7 @@ import * as fs from 'node:fs';
 import { resolve, join } from 'path';
 import { v4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
+import { URL } from 'url';
 
 @Injectable()
 export class FileService {
