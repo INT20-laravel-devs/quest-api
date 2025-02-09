@@ -9,13 +9,21 @@ import { HttpExceptionFilter } from './utils/http-exception.filter';
 import fastifyCookie from '@fastify/cookie';
 import { join, resolve } from 'path';
 import multiPart from '@fastify/multipart';
+import fastifyCors from '@fastify/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
-  app.enableCors({ origin: '*', credentials: true });
+
+  await app.register(fastifyCors, {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.register(fastifyCookie);
   app.useStaticAssets({ root: join(resolve(), '/static/') });
