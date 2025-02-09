@@ -31,7 +31,7 @@ export class AuthService {
       to,
       subject: 'Email verification on Questly.com',
       message: 'Please click the link below to verify your email address:',
-      link: `${baseUrl}/verify-email/${token}`,
+      link: `${baseUrl}/auth/approve-email/?token=${token}`,
     });
     return token;
   }
