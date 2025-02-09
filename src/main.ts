@@ -18,13 +18,10 @@ async function bootstrap() {
   );
 
   const configService = app.get<ConfigService>(ConfigService);
-
-  const origin = configService.get<string>('allowedOrigins').split(',');
+  const origin = configService.get<string>('allowedOrigin');
 
   await app.register(fastifyCors, {
     origin,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
 
