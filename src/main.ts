@@ -17,8 +17,12 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  const configService = app.get<ConfigService>(ConfigService);
+
+  const origin = configService.get<string>('allowedOrigins').split(',');
+
   await app.register(fastifyCors, {
-    origin: process.env.ALLOWED_ORIGINS,
+    origin,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -28,8 +32,6 @@ async function bootstrap() {
   await app.register(fastifyCookie);
   app.useStaticAssets({ root: join(resolve(), '/static/') });
   await app.register(multiPart);
-
-  const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<number>('port');
   await app.listen(port ?? 3000, '0.0.0.0', () =>
     console.info(`Server is running on http://127.0.0.1:${port}`),
