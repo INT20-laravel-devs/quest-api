@@ -12,10 +12,9 @@ export class TasksService {
   ) {}
 
   async create(dto: CreateImageTaskDto, file: File) {
-    const imageLink = this.fileService.uploadFile(file);
-    const { coordinate, ...rest } = dto;
+    const { coordinate,variant, ...rest } = dto;
     if (coordinate) {
-      coordinate.imageLink = imageLink;
+      coordinate.imageLink = this.fileService.uploadFile(file);
       return this.tasksRepository.create({
         ...rest,
         coordinate: {
@@ -27,6 +26,11 @@ export class TasksService {
     } else {
       return this.tasksRepository.create({
         ...rest,
+        variants: {
+          createMany: {
+            data: variant,
+          }
+        },
       });
     }
   }

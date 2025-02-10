@@ -8,6 +8,7 @@ export class TasksRepository {
 
   private readonly include = {
     coordinate: true,
+    variants: true,
   };
 
   async create(data: Prisma.TaskUncheckedCreateInput) {
