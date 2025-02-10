@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateQuestDto } from './dto/create-quest.dto';
 import { QuestsService } from './quests.service';
 import { AuthGuard } from '../auth/guard/auth.guard';
@@ -21,5 +29,12 @@ export class QuestsController {
   @Get()
   async getAll(@Req() request: FastifyRequest) {
     return this.questsService.findManyByUser(request['user']['id']);
+  }
+
+  @Patch()
+  async updateQuest(
+    @Body() updateTask: { isPublished: boolean; questId: string },
+  ) {
+    return this.questsService.updateQuest(updateTask);
   }
 }

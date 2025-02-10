@@ -14,7 +14,19 @@ export class QuestsRepository {
 
   async findMany(where: Prisma.QuestFindManyArgs) {
     return this.prismaService.quest.findMany({
-      ...where
-    })
+      ...where,
+    });
+  }
+
+  async updateQuestById(
+    questId: string,
+    data: Prisma.QuestUncheckedUpdateInput,
+  ) {
+    return this.prismaService.quest.update({
+      where: {
+        id: questId,
+      },
+      data,
+    });
   }
 }

@@ -43,6 +43,7 @@ model Quest {
   title          String
   description    String
   timeLimit      Int?            @map("time_limit")
+  isPublished    Boolean         @default(false) @map("is_published")
   participations Participation[]
   tasks          Task[]
   comments       Comment[]

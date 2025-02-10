@@ -20,4 +20,10 @@ export class QuestsService {
       },
     });
   }
+
+  async updateQuest(updateQuest: { isPublished: boolean; questId: string }) {
+    return this.questsRepository.updateQuestById(updateQuest.questId, {
+      isPublished: updateQuest.isPublished,
+    });
+  }
 }
