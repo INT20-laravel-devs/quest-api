@@ -15,11 +15,19 @@ export class CreateTextTaskDto {
 }
 
 export class CreateImageTaskDto extends CreateTextTaskDto {
-  coordinate: CreateCoordinateDto;
+  coordinate?: CreateCoordinateDto;
+
+  variant?: CreateVariantDto[];
 }
 
 export class CreateCoordinateDto {
   x: number;
   y: number;
   imageLink?: string;
+}
+
+export class CreateVariantDto {
+  content: string;
+
+  isCorrect: boolean;
 }
