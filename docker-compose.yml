@@ -24,8 +24,18 @@ services:
     
     watchtower:
         image: containrrr/watchtower
+        container_name: watchtower
         restart: always
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
         command: --interval 30
+
+    web:
+      image: stbasarab/questly-web
+      restart: always
+      container_name: questly-web
+      ports:
+        - "3001:3000"
+      depends_on:
+        - api
         

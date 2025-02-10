@@ -18,7 +18,7 @@ async function bootstrap() {
   );
 
   const configService = app.get<ConfigService>(ConfigService);
-  const origin = configService.get<string>('allowedOrigin');
+  const origin = configService.get<string>('allowedOrigins').split(',');
 
   await app.register(fastifyCors, {
     origin,
