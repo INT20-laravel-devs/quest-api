@@ -3,10 +3,22 @@ import { PrismaService } from './prisma.service';
 import { TasksRepository } from './repos/tasks.repository';
 import { QuestsRepository } from './repos/quests-repository';
 import { UserRepo } from './repos/user.repo';
+import { ParticipationRepository } from './repos/participation.repository';
 
 @Global()
 @Module({
-  providers: [PrismaService, TasksRepository, QuestsRepository, UserRepo],
-  exports: [TasksRepository, QuestsRepository, UserRepo],
+  providers: [
+    PrismaService,
+    TasksRepository,
+    QuestsRepository,
+    UserRepo,
+    ParticipationRepository,
+  ],
+  exports: [
+    TasksRepository,
+    QuestsRepository,
+    UserRepo,
+    ParticipationRepository,
+  ],
 })
 export class DatabaseModule {}

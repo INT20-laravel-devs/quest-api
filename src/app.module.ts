@@ -6,6 +6,7 @@ import { TasksModule } from './api/tasks/tasks.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/user/user.module';
+import { ParticipationModule } from './api/participation/participation.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from './api/user/user.module';
     TasksModule,
     DatabaseModule,
     UserModule,
+    ParticipationModule,
   ],
 })
 export class AppModule {}
