@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -45,7 +46,12 @@ export class QuestsController {
 
   @Patch()
   async updateQuest(
-    @Body() updateTask: { isPublished: boolean; questId: string },
+    @Body()
+    updateTask: {
+      isPublished: boolean;
+      questId: string;
+      isApproved: boolean;
+    },
   ) {
     return this.questsService.updateQuest(updateTask);
   }
@@ -54,5 +60,10 @@ export class QuestsController {
   async getTasks(@Param('id') id: string) {
     const quest = await this.questsService.get(id);
     return quest.tasks;
+  }
+
+  @Delete('/:id')
+  async delete(@Param('id') questId: string) {
+    return this.questsService.delete(questId);
   }
 }

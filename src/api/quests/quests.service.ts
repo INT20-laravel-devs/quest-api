@@ -21,13 +21,22 @@ export class QuestsService {
     });
   }
 
-  async updateQuest(updateQuest: { isPublished: boolean; questId: string }) {
+  async updateQuest(updateQuest: {
+    isPublished: boolean;
+    questId: string;
+    isApproved: boolean;
+  }) {
     return this.questsRepository.updateQuestById(updateQuest.questId, {
       isPublished: updateQuest.isPublished,
+      isApproved: updateQuest.isApproved,
     });
   }
 
   async get(questId: string) {
     return this.questsRepository.findById(questId);
+  }
+
+  async delete(questId: string) {
+    return this.questsRepository.deleteById(questId);
   }
 }
