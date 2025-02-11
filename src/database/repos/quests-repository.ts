@@ -6,15 +6,26 @@ import { Prisma } from '@prisma/client';
 export class QuestsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private include = {
+    tasks: {
+      include: {
+        variants: true,
+        coordinate: true,
+      },
+    },
+  };
+
   async create(data: Prisma.QuestUncheckedCreateInput) {
     return this.prismaService.quest.create({
       data,
+      include: this.include,
     });
   }
 
   async findMany(where: Prisma.QuestFindManyArgs) {
     return this.prismaService.quest.findMany({
       ...where,
+      include: this.include,
     });
   }
 
@@ -27,6 +38,14 @@ export class QuestsRepository {
         id: questId,
       },
       data,
+      include: this.include,
+    });
+  }
+
+  async findById(id: string) {
+    return this.prismaService.quest.findFirst({
+      where: { id },
+      include: this.include,
     });
   }
 }

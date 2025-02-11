@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Req,
@@ -11,10 +12,14 @@ import { CreateQuestDto } from './dto/create-quest.dto';
 import { QuestsService } from './quests.service';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { FastifyRequest } from 'fastify';
+import { QuestsMapper } from './quests.mapper';
 
 @Controller('quest')
 export class QuestsController {
-  constructor(private readonly questsService: QuestsService) {}
+  constructor(
+    private readonly questsService: QuestsService,
+    private readonly questsMapper: QuestsMapper,
+  ) {}
 
   @UseGuards(AuthGuard())
   @Post()
@@ -22,13 +27,20 @@ export class QuestsController {
     @Body() createQuest: CreateQuestDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.questsService.create(createQuest, request['user']['id']);
+    const quest = await this.questsService.create(
+      createQuest,
+      request['user']['id'],
+    );
+    return this.questsMapper.mapQuest(quest);
   }
 
   @UseGuards(AuthGuard())
   @Get()
   async getAll(@Req() request: FastifyRequest) {
-    return this.questsService.findManyByUser(request['user']['id']);
+    const quests = await this.questsService.findManyByUser(
+      request['user']['id'],
+    );
+    return this.questsMapper.mapQuests(quests);
   }
 
   @Patch()
@@ -36,5 +48,11 @@ export class QuestsController {
     @Body() updateTask: { isPublished: boolean; questId: string },
   ) {
     return this.questsService.updateQuest(updateTask);
+  }
+
+  @Get('/:id/tasks')
+  async getTasks(@Param('id') id: string) {
+    const quest = await this.questsService.get(id);
+    return quest.tasks;
   }
 }

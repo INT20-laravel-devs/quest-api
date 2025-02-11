@@ -26,4 +26,8 @@ export class QuestsService {
       isPublished: updateQuest.isPublished,
     });
   }
+
+  async get(questId: string) {
+    return this.questsRepository.findById(questId);
+  }
 }
