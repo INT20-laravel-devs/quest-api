@@ -3,4 +3,5 @@ export class CreateParticipationDto {
   questId: string;
   points: number;
   timeSpent: number;
+  correctAnswers: number;
 }

@@ -6,11 +6,25 @@ import { Prisma } from '@prisma/client';
 export class ParticipationRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private readonly include = {
+    quest: {
+      include: {
+        tasks: true,
+      },
+    },
+  };
+
   async create(data: Prisma.ParticipationUncheckedCreateInput) {
-    return this.prismaService.participation.create({ data });
+    return this.prismaService.participation.create({
+      data,
+      include: this.include,
+    });
   }
 
   async findMany(where: Prisma.ParticipationWhereInput) {
-    return this.prismaService.participation.findMany({ where });
+    return this.prismaService.participation.findMany({
+      where,
+      include: this.include,
+    });
   }
 }

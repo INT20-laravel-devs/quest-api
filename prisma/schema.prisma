@@ -53,14 +53,15 @@ model Quest {
 }
 
 model Participation {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id")
-  quest     Quest    @relation(fields: [questId], references: [id])
-  questId   String   @map("quest_id")
-  points    Int      @default(0)
-  timeSpent Int      @map("time_spent")
-  createdAt DateTime @default(now()) @map("created_at")
+  id             String   @id @default(uuid())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String   @map("user_id")
+  quest          Quest    @relation(fields: [questId], references: [id])
+  questId        String   @map("quest_id")
+  correctAnswers Int?     @map("correct_answers")
+  points         Int      @default(0)
+  timeSpent      Int      @map("time_spent")
+  createdAt      DateTime @default(now()) @map("created_at")
 
   @@map("participations")
 }
