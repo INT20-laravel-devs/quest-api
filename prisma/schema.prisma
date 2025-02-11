@@ -132,6 +132,7 @@ model Comment {
   quest     Quest    @relation(fields: [questId], references: [id])
   questId   String   @map("quest_id")
   content   String
+  grade     Int?
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("comments")
