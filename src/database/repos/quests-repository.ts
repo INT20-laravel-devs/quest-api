@@ -48,4 +48,12 @@ export class QuestsRepository {
       include: this.include,
     });
   }
+
+  async deleteById(id: string) {
+    return this.prismaService.quest.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

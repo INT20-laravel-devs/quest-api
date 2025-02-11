@@ -44,6 +44,7 @@ model Quest {
   description    String
   timeLimit      Int?            @map("time_limit")
   isPublished    Boolean         @default(false) @map("is_published")
+  isApproved     Boolean         @default(false) @map("is_approved")
   participations Participation[]
   tasks          Task[]
   comments       Comment[]
