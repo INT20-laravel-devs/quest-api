@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/user/user.module';
 import { ParticipationModule } from './api/participation/participation.module';
+import { CommentsModule } from './api/comments/comments.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ParticipationModule } from './api/participation/participation.module';
     DatabaseModule,
     UserModule,
     ParticipationModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}
