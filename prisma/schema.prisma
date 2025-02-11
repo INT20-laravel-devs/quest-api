@@ -96,6 +96,8 @@ model Coordinate {
   taskId    String  @unique @map("taskId_id")
   x         Float
   y         Float
+  endX      Float?  @map("end_x")
+  endY      Float?  @map("end_y")
   imageLink String? @map("image_link")
 
   @@map("coordinates")
