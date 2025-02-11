@@ -3,6 +3,8 @@ import { CreateImageTaskDto } from './dto/create-task.dto';
 import { Injectable } from '@nestjs/common';
 import { FileService } from '../../file/file.service';
 import { File } from '@nest-lab/fastify-multer';
+import { EntityNotFoundException } from '../../utils/exception/entity-not-found.exception';
+import { TaskIsPublishedException } from '../../utils/exception/task-is-published.exception';
 
 @Injectable()
 export class TasksService {
@@ -35,5 +37,16 @@ export class TasksService {
         },
       });
     }
+  }
+
+  async delete(taskId: string) {
+    const task = await this.tasksRepository.findById(taskId);
+    if (!task) {
+      throw new EntityNotFoundException('Task', 'id');
+    }
+    if (task.quest.isPublished) {
+      throw new TaskIsPublishedException();
+    }
+    await this.tasksRepository.deleteById(taskId);
   }
 }
