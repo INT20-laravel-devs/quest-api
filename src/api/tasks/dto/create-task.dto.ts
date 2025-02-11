@@ -23,6 +23,8 @@ export class CreateImageTaskDto extends CreateTextTaskDto {
 export class CreateCoordinateDto {
   x: number;
   y: number;
+  endX?: number;
+  endY?: number
   imageLink?: string;
 }
 
