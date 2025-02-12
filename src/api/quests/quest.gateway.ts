@@ -13,7 +13,7 @@ export class QuestGateway {
   @WebSocketServer()
   private server: Server;
 
-  private chatHistory = new Map<string, MessageDto[]>;
+  private chatHistory = new Map<string, MessageDto[]>();
 
   @SubscribeMessage('join')
   joinRoom(
@@ -26,9 +26,12 @@ export class QuestGateway {
       client.rooms.add(body.questId);
     }
     const history = this.chatHistory.get(body.questId);
-    if (history) return history;
-    this.chatHistory.set(body.questId, []);
-    return [];
+    if (history) {
+      client.emit('join', history);
+    } else {
+      this.chatHistory.set(body.questId, []);
+      client.emit('join', []);
+    }
   }
 
   @SubscribeMessage('message')
