@@ -17,4 +17,17 @@ export class QuestsMapper {
       isPublished: quest.isPublished,
     };
   }
+
+  getOne(quest: Quest & { grade: number }) {
+    return {
+      id: quest.id,
+      ownerId: quest.ownerId,
+      title: quest.title,
+      description: quest.description,
+      timeLimit: quest.timeLimit,
+      grade: quest.grade,
+      isApproved: quest.isApproved,
+      isPublished: quest.isPublished,
+    };
+  }
 }

@@ -66,4 +66,13 @@ export class QuestsController {
   async delete(@Param('id') questId: string) {
     return this.questsService.delete(questId);
   }
+
+  @Get('/:id')
+  async get(@Param('id') questId: string) {
+    const quest = await this.questsService.getWithGrade(questId);
+    return {
+      ...this.questsMapper.getOne(quest),
+      taskCount: quest.tasks.length,
+    };
+  }
 }

@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { QuestsRepository } from '../../database/repos/quests-repository';
 import { CreateQuestDto } from './dto/create-quest.dto';
+import { CommentRepository } from '../../database/repos/comment.repository';
 
 @Injectable()
 export class QuestsService {
-  constructor(private readonly questsRepository: QuestsRepository) {}
+  constructor(
+    private readonly questsRepository: QuestsRepository,
+    private readonly commentRepository: CommentRepository,
+  ) {}
 
   async create(dto: CreateQuestDto, userId: string) {
     return this.questsRepository.create({
@@ -38,5 +42,18 @@ export class QuestsService {
 
   async delete(questId: string) {
     return this.questsRepository.deleteById(questId);
+  }
+
+  async getWithGrade(questId: string) {
+    const quest = await this.questsRepository.findById(questId);
+    const comments = await this.commentRepository.findMany({
+      where: { questId },
+    });
+    return {
+      ...quest,
+      grade: comments.length
+        ? comments.reduce((acc, c) => acc + c.grade, 0) / comments.length
+        : 0,
+    };
   }
 }

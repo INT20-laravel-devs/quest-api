@@ -11,7 +11,7 @@ export class CommentsController {
     return this.commentService.createComment(data);
   }
 
-  @Get(':questId')
+  @Get('/:questId')
   async getComments(@Param('questId') questId: string) {
     return this.commentService.getComments(questId);
   }
