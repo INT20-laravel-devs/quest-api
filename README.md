@@ -32,6 +32,20 @@ An API for the Questly web application.
 - Node mailer
 - SMTP
 
+## WebSocket Integration
+
+Our project includes WebSocket support for real-time communication using socket.io. The WebSocket implementation enables users to join chat rooms, send messages, and leave rooms dynamically.
+
+### Events
+
+The WebSocket connection handles the following three events:
+
+- **join** – Allows a user to join a specific chat room.
+
+- **message** – Enables sending and receiving messages within the chat room.
+
+- **leave** – Notifies when a user leaves a chat room.
+
 ## Installation
 
 ```bash
