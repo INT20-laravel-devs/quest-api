@@ -55,9 +55,9 @@ model Quest {
 
 model Participation {
   id             String   @id @default(uuid())
-  user           User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String   @map("user_id")
-  quest          Quest    @relation(fields: [questId], references: [id])
+  quest          Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
   questId        String   @map("quest_id")
   correctAnswers Int?     @map("correct_answers")
   points         Int      @default(0)
@@ -69,7 +69,7 @@ model Participation {
 
 model Task {
   id          String      @id @default(uuid())
-  quest       Quest       @relation(fields: [questId], references: [id])
+  quest       Quest       @relation(fields: [questId], references: [id], onDelete: Cascade)
   questId     String      @map("quest_id")
   title       String
   description String?
@@ -84,7 +84,7 @@ model Task {
 
 model Variant {
   id        String  @id @default(uuid())
-  task      Task    @relation(fields: [taskId], references: [id])
+  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String  @map("taskId_id")
   content   String
   isCorrect Boolean @default(false) @map("is_correct")
@@ -94,7 +94,7 @@ model Variant {
 
 model Coordinate {
   id        String  @id @default(uuid())
-  task      Task    @relation(fields: [taskId], references: [id])
+  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String  @unique @map("taskId_id")
   x         Float
   y         Float
@@ -128,9 +128,9 @@ model UserAchievement {
 
 model Comment {
   id        String   @id @default(uuid())
-  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String?   @map("user_id")
-  quest     Quest    @relation(fields: [questId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?  @map("user_id")
+  quest     Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
   questId   String   @map("quest_id")
   content   String
   grade     Int?
@@ -142,7 +142,7 @@ model Comment {
 model Rating {
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
-  quest     Quest    @relation(fields: [questId], references: [id])
+  quest     Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
   questId   String   @map("quest_id")
   value     Int
   createdAt DateTime @default(now()) @map("created_at")
