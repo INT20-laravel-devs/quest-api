@@ -77,7 +77,7 @@ We have Swagger for the project.
 
 ![image](https://github.com/user-attachments/assets/1de9f795-a700-4221-b61e-12402313324b)
 
-Public API documentation is available at http://localhost:4555/api
+Public API documentation is available at http://34.88.61.28:3005/api
 
 
 ## Environment variables
