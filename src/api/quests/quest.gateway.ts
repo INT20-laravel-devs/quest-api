@@ -20,11 +20,10 @@ export class QuestGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() body: { questId: string },
   ) {
-    if (client.rooms.has(body.questId)) {
-      client.join(body.questId);
-    } else {
+    if (!client.rooms.has(body.questId)) {
       client.rooms.add(body.questId);
     }
+    client.join(body.questId);
     const history = this.chatHistory.get(body.questId);
     if (history) {
       client.emit('join', history);
