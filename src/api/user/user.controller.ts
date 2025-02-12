@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete, Get,
   Param,
   Patch,
   Req,
@@ -13,6 +13,7 @@ import { FileInterceptor, File } from '@nest-lab/fastify-multer';
 import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { UserUpdateDto } from './dto/user-update.dto';
+import { Role } from '@prisma/client';
 
 @Controller('/users')
 export class UserController {
@@ -29,5 +30,17 @@ export class UserController {
   @UseGuards(AuthGuard())
   update(@Body() body: UserUpdateDto, @Param('id') id: string) {
     return this.userService.update(body, id);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard(Role.ADMIN))
+  getMany() {
+    return this.userService.getMany();
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard(Role.ADMIN))
+  delete(@Param('id') id: string) {
+    return this.userService.deleteById(id);
   }
 }

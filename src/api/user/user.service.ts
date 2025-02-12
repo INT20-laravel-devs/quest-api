@@ -5,7 +5,7 @@ import { UserRepo } from '../../database/repos/user.repo';
 import { UserUpdateDto } from './dto/user-update.dto';
 import * as bcrypt from 'bcryptjs';
 import { PasswordIsNotValidException } from '../../utils/exception/password-is-not-valid.exception';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -42,6 +42,25 @@ export class UserService {
       );
     }
     const user = await this.userRepo.updateById(userId, data);
+    delete user.password;
+    return user;
+  }
+
+  async getMany() {
+    const users = await this.userRepo.findMany({});
+    const result = [];
+    for (const user of users) {
+      if (user.role !== Role.ADMIN) {
+        delete user.password;
+        result.push(user);
+      }
+    }
+    return result;
+  }
+
+  async deleteById(userId: string) {
+    const user = await this.userRepo.deleteById(userId);
+    if (user.avatarLink) this.fileService.deleteFile(user.avatarLink);
     delete user.password;
     return user;
   }

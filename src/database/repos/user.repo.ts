@@ -21,4 +21,12 @@ export class UserRepo {
   async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     return this.prisma.user.update({ where: { id }, data });
   }
+
+  async findMany(where: Prisma.UserWhereInput): Promise<User[]> {
+    return this.prisma.user.findMany({ where });
+  }
+
+  async deleteById(id: string): Promise<User> {
+    return this.prisma.user.delete({ where: { id } });
+  }
 }

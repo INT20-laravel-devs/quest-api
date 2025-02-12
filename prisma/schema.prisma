@@ -128,8 +128,8 @@ model UserAchievement {
 
 model Comment {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id")
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?   @map("user_id")
   quest     Quest    @relation(fields: [questId], references: [id])
   questId   String   @map("quest_id")
   content   String
