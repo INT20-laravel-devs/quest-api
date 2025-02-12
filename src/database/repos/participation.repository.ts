@@ -27,4 +27,11 @@ export class ParticipationRepository {
       include: this.include,
     });
   }
+
+  async findById(userId: string, questId: string) {
+    return this.prismaService.participation.findFirst({
+      where: { userId, questId },
+      include: this.include,
+    });
+  }
 }

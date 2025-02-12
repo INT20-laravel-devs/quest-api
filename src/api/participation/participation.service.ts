@@ -17,4 +17,8 @@ export class ParticipationService {
       userId,
     });
   }
+
+  async getById(userId: string, questId: string) {
+    return this.participationRepository.findById(userId, questId);
+  }
 }
