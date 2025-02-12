@@ -17,4 +17,8 @@ export class CommentService {
       },
     });
   }
+
+  async deleteComment(commentId: string) {
+    return this.commentRepository.deleteById(commentId);
+  }
 }

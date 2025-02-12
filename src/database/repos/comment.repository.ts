@@ -35,4 +35,12 @@ export class CommentRepository {
       include: this.include,
     });
   }
+
+  async deleteById(id: string) {
+    return this.prismaService.comment.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
