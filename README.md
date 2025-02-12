@@ -61,6 +61,8 @@ $ pnpm run start:prod
 
 We have Swagger for the project.
 
+![image](https://github.com/user-attachments/assets/1de9f795-a700-4221-b61e-12402313324b)
+
 Public API documentation is available at http://localhost:4555/api
 
 
@@ -161,7 +163,11 @@ $ docker pull stbasarab/questly
 
 Also we have a **GitHub Actions** workflow for the project. Questly API is automatically deployed to the Docker Hub when a new release is created.
 
+![image](https://github.com/user-attachments/assets/06a1e8ac-fa53-4ad1-9292-3639cf97b5f6)
+
 We deploy our project to the **Google Cloud Platform**. We use the Google Cloud VM instance.
+
+![image](https://github.com/user-attachments/assets/4debf1fe-ce54-4d07-9352-7d29f8db6fe5)
 
 PUBLIC API LINK: http://34.88.61.28:3005
 
