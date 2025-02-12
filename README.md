@@ -57,6 +57,13 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Swagger
+
+We have Swagger for the project.
+
+Public API documentation is available at http://localhost:4555/api
+
+
 ## Environment variables
 
 ```bash
@@ -77,4 +84,84 @@ ALLOWED_ORIGINS=
 ```
 
 ## Deployment
+
+First of all? we have dockerization for the project. Our Dockerfile is ready to use.
+
+```dockerfile
+FROM node:22
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install -g pnpm && \
+    pnpm install
+
+COPY . .
+
+RUN pnpm dlx prisma generate && \
+    pnpm build && \
+    mkdir static
+
+EXPOSE 4555
+
+CMD ["pnpm", "start"]
+```
+
+And we have docker-compose for the all project.
+
+```yml
+services:
+    api:
+        image: stbasarab/questly
+        restart: always
+        container_name: questly-api
+        volumes:
+          - ~/static:/app/static
+        ports:
+          - "3005:4555"
+        env_file:
+          - ~/.env
+        depends_on:
+            - db
+    db:
+        image: postgres:15
+        restart: always
+        container_name: postgres-db
+        volumes:
+          - ~/postgres/data:/var/lib/postgresql/data
+        ports:
+          - "5553:5432"
+        env_file:
+          - ~/.env.postgres
+    
+    watchtower:
+        image: containrrr/watchtower
+        container_name: watchtower
+        restart: always
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        command: --interval 30
+
+    web:
+      image: stbasarab/questly-web
+      restart: always
+      container_name: questly-web
+      ports:
+        - "3001:3000"
+      depends_on:
+        - api
+```
+
+Our backend is available on the Docker Hub. You can pull it from there.
+
+```bash
+$ docker pull stbasarab/questly
+```
+
+Also we have a **GitHub Actions** workflow for the project. Questly API is automatically deployed to the Docker Hub when a new release is created.
+
+We deploy our project to the **Google Cloud Platform**. We use the Google Cloud VM instance.
+
+PUBLIC API LINK: http://34.88.61.28:3005
 

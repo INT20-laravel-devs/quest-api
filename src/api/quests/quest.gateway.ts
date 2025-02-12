@@ -7,8 +7,13 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MessageDto } from './dto/message.dto';
+import * as process from 'node:process';
 
-@WebSocketGateway({ cors: { origin: '*' } })
+@WebSocketGateway({
+  cors: {
+    origin: process.env.ALLOWED_ORIGINS.split(','),
+  },
+})
 export class QuestGateway {
   @WebSocketServer()
   private server: Server;
@@ -16,14 +21,14 @@ export class QuestGateway {
   private chatHistory = new Map<string, MessageDto[]>();
 
   @SubscribeMessage('join')
-  joinRoom(
+  async joinRoom(
     @ConnectedSocket() client: Socket,
     @MessageBody() body: { questId: string },
   ) {
     if (!client.rooms.has(body.questId)) {
       client.rooms.add(body.questId);
     }
-    client.join(body.questId);
+    await client.join(body.questId);
     const history = this.chatHistory.get(body.questId);
     if (history) {
       client.emit('join', history);
@@ -34,7 +39,7 @@ export class QuestGateway {
   }
 
   @SubscribeMessage('message')
-  async handleMessage(@MessageBody() data: MessageDto) {
+  handleMessage(@MessageBody() data: MessageDto) {
     this.server.to(data.questId).emit('message', data);
     const history = this.chatHistory.get(data.questId);
     history.push(data);
