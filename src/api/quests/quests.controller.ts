@@ -14,7 +14,9 @@ import { QuestsService } from './quests.service';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { FastifyRequest } from 'fastify';
 import { QuestsMapper } from './quests.mapper';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Quest')
 @Controller('quest')
 export class QuestsController {
   constructor(

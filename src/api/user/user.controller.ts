@@ -1,6 +1,8 @@
 import {
   Body,
-  Controller, Delete, Get,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
   Req,
@@ -14,7 +16,9 @@ import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { Role } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

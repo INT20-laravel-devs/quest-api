@@ -11,7 +11,9 @@ import { ParticipationService } from './participation.service';
 import { CreateParticipationDto } from './dto/create-participation.dto';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { FastifyRequest } from 'fastify';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Participation')
 @Controller('participation')
 export class ParticipationController {
   constructor(private readonly participationService: ParticipationService) {}

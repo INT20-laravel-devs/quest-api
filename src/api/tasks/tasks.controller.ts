@@ -11,7 +11,9 @@ import { TasksService } from './tasks.service';
 import { CreateImageTaskDto } from './dto/create-task.dto';
 import { File, FileInterceptor } from '@nest-lab/fastify-multer';
 import { AuthGuard } from '../auth/guard/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Task')
 @Controller('/tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
